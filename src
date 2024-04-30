@@ -1,4 +1,4 @@
-local library = {
+  local library = {
     flags = {}
   }
   library.Flags = library.flags
@@ -343,6 +343,13 @@ end
             ZIndex = 11002
         })
     })
+  end
+
+  if syn.protect_gui then
+    syn.protect_gui(Window)
+    Window.Parent = CoreGui
+  else
+    Window.Parent = CoreGui
   end
 
   local ResizeButton = Window.Main.Bottom.ResizeIcon.ResizeButton
