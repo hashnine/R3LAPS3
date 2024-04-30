@@ -1,0 +1,141 @@
+-- DiscordUI.lua
+
+local DiscordUI = {}
+
+-- Define colors
+local theme = {
+    background = Color3.fromRGB(54, 57, 63),
+    primary = Color3.fromRGB(114, 137, 218),
+    text = Color3.fromRGB(255, 255, 255),
+    accent = Color3.fromRGB(153, 170, 181),
+    divider = Color3.fromRGB(35, 39, 42),
+    button = {
+        default = Color3.fromRGB(114, 137, 218),
+        hover = Color3.fromRGB(98, 113, 178),
+        pressed = Color3.fromRGB(84, 97, 152)
+    }
+}
+
+-- Helper function to create a rounded frame
+local function createRoundedFrame(parent, size, position, color, cornerRadius)
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, size.X, 0, size.Y)
+    frame.Position = UDim2.new(0, position.X, 0, position.Y)
+    frame.BackgroundColor3 = color
+    frame.BorderSizePixel = 0
+    frame.ClipsDescendants = true
+    frame.Parent = parent
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, cornerRadius)
+    corner.Parent = frame
+    
+    return frame
+end
+
+-- Create a toggle button
+function DiscordUI.ToggleButton(parent, text, defaultValue, callback)
+    local button = createRoundedFrame(parent, Vector2.new(100, 40), Vector2.new(0, 0), theme.background, 8)
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.Position = UDim2.new(0, 0, 0, 0)
+    textLabel.Text = text
+    textLabel.TextColor3 = theme.text
+    textLabel.TextSize = 16
+    textLabel.Font = Enum.Font.Gotham
+    textLabel.Parent = button
+    
+    local toggle = Instance.new("BoolValue")
+    toggle.Value = defaultValue
+    toggle.Parent = button
+    
+    button.MouseButton1Click:Connect(function()
+        toggle.Value = not toggle.Value
+        if callback then
+            callback(toggle.Value)
+        end
+    end)
+    
+    return button, toggle
+end
+
+-- Create a button
+function DiscordUI.Button(parent, text, callback)
+    local button = createRoundedFrame(parent, Vector2.new(100, 40), Vector2.new(0, 0), theme.button.default, 8)
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.Position = UDim2.new(0, 0, 0, 0)
+    textLabel.Text = text
+    textLabel.TextColor3 = theme.text
+    textLabel.TextSize = 16
+    textLabel.Font = Enum.Font.Gotham
+    textLabel.Parent = button
+    
+    button.MouseButton1Click:Connect(function()
+        if callback then
+            callback()
+        end
+    end)
+    
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = theme.button.hover
+    end)
+    
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = theme.button.default
+    end)
+    
+    button.MouseButton1Down:Connect(function()
+        button.BackgroundColor3 = theme.button.pressed
+    end)
+    
+    button.MouseButton1Up:Connect(function()
+        button.BackgroundColor3 = theme.button.hover
+    end)
+    
+    return button
+end
+
+-- Create a dropdown
+function DiscordUI.Dropdown(parent, options, defaultIndex, callback)
+    local dropdown = createRoundedFrame(parent, Vector2.new(160, 40), Vector2.new(0, 0), theme.background, 8)
+    local selectedText = Instance.new("TextLabel")
+    selectedText.Size = UDim2.new(1, -30, 1, 0)
+    selectedText.Position = UDim2.new(0, 15, 0, 0)
+    selectedText.Text = options[defaultIndex]
+    selectedText.TextColor3 = theme.text
+    selectedText.TextSize = 16
+    selectedText.Font = Enum.Font.Gotham
+    selectedText.TextXAlignment = Enum.TextXAlignment.Left
+    selectedText.Parent = dropdown
+    
+    local arrow = Instance.new("ImageLabel")
+    arrow.Size = UDim2.new(0, 20, 0, 20)
+    arrow.Position = UDim2.new(1, -25, 0.5, -10)
+    arrow.AnchorPoint = Vector2.new(1, 0.5)
+    arrow.Image = "rbxassetid://4406358279"
+    arrow.BackgroundTransparency = 1
+    arrow.Parent = dropdown
+    
+    local dropdownFrame = createRoundedFrame(dropdown, Vector2.new(160, 0), Vector2.new(0, 40), theme.background, 8)
+    dropdownFrame.Visible = false
+    
+    for i, option in ipairs(options) do
+        local optionButton = DiscordUI.Button(dropdownFrame, option, function()
+            selectedText.Text = option
+            dropdownFrame.Visible = false
+            if callback then
+                callback(i)
+            end
+        end)
+        optionButton.Position = UDim2.new(0, 0, 0, (i - 1) * 40)
+    end
+    
+    dropdown.MouseButton1Click:Connect(function()
+        dropdownFrame.Visible = not dropdownFrame.Visible
+    end)
+    
+    return dropdown
+end
+
+return DiscordUI
