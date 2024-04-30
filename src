@@ -345,12 +345,26 @@ end
     })
   end
 
-  if syn.protect_gui then
-    syn.protect_gui(Window)
-    Window.Parent = CoreGui
-  else
-    Window.Parent = CoreGui
-  end
+local Window = -- Your window object
+local CoreGui = game:GetService("CoreGui")
+
+-- Check if syn.protect_gui exists and is a function
+if syn and type(syn.protect_gui) == "function" then
+    -- Attempt to protect the GUI
+    local success, errorMsg = pcall(syn.protect_gui, Window)
+    
+    -- Check if protection was successful
+    if success then
+        print("GUI protected successfully.")
+    else
+        warn("Failed to protect GUI: " .. tostring(errorMsg))
+    end
+else
+    warn("syn.protect_gui not available.")
+end
+
+-- Set the parent of the window
+Window.Parent = CoreGui
 
   local ResizeButton = Window.Main.Bottom.ResizeIcon.ResizeButton
   local TabContainer = Window.Main.Topbar.TabContainer
