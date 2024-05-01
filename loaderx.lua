@@ -4449,7 +4449,7 @@ function UILibrary.Section:Keybind(sett, callback)
 
         TweenService:Create(
             element,
-            TweenInfo.new(0.2), -- Assuming TI is defined elsewhere as TweenInfo
+            TI,
             {
                 Size = UDim2.fromScale(textBounds / element.Parent.AbsoluteSize.X, 1)
             }
@@ -4458,7 +4458,7 @@ function UILibrary.Section:Keybind(sett, callback)
 
     local currentKb = nil
     local keyPressConn = nil
-    local currentKBInfo = {} -- Define currentKBInfo
+    local currentKbInfo = {}
 
     functions.setValue = function(new)
         --/// anims
@@ -4479,9 +4479,9 @@ function UILibrary.Section:Keybind(sett, callback)
                 end
 
                 if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == currentKb then
-                    callback()
+                    callback(currentKb) -- Passing current keybind to callback
                 elseif input.UserInputType.Name == currentKb.Name then
-                    callback()
+                    callback(currentKb) -- Passing current keybind to callback
                 end
             end
         )
@@ -4502,7 +4502,7 @@ function UILibrary.Section:Keybind(sett, callback)
                 return
             end
 
-            if currentKBInfo.old and currentKBInfo.set ~= functions.setValue then
+            if currentKbInfo.old and currentKbInfo.set ~= functions.setValue then
                 return
             end
 
@@ -4539,9 +4539,9 @@ function UILibrary.Section:Keybind(sett, callback)
                 end
             )
 
-            currentKBInfo.old = old
-            currentKBInfo.conn = conn
-            currentKBInfo.set = functions.setValue
+            currentKbInfo.old = old
+            currentKbInfo.conn = conn
+            currentKbInfo.set = functions.setValue
         end
     )
 
@@ -4557,13 +4557,13 @@ function UILibrary.Section:Keybind(sett, callback)
         },
         functions
     )
-
-    -- Assuming the following line is correct based on your existing code
-    -- It should be adjusted if there's any mistake in understanding your UI hierarchy
-    self.oldSelf.oldSelf.oldSelf.UI[self.oldSelf.oldSelf.categoryUI.Name][self.oldSelf.SectionName][self.Section.Name][sett.Title] = meta
+    self.oldSelf.oldSelf.oldSelf.UI[self.oldSelf.oldSelf.categoryUI.Name][self.oldSelf.SectionName][
+            self.Section.Name
+        ][sett.Title] = meta
 
     return meta
 end
+
 
 
 function toInteger(color)
