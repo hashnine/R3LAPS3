@@ -5227,33 +5227,27 @@ function UILibrary.Section:Dropdown(sett, callback)
         element.MainHolder.Content.Text.Text = String
     end
 
-    functions.setValue = function(option, value, isDefault)
-        if options[option] ~= nil then
-            if element.OptionHolder.ContentHolder.Content:FindFirstChild(option) then
-                if sett.Multi == true then
-                    options[option] = value
-
-                    functions.refreshUI()
-                else
-                    if value == true then
-                        for i, v in pairs(options) do
-                            options[i] = false
-                        end
-
-                        if isDefault == nil then
-                            functions.openMenu()
-                        end
-
-                        options[option] = true
-
-                        functions.refreshUI()
-                    end
+functions.setValue = function(option, value, isDefault)
+    if options[option] ~= nil then
+        if element.OptionHolder.ContentHolder.Content:FindFirstChild(option) then
+            if sett.Multi == true then
+                options[option] = value
+            else
+                for i, v in pairs(options) do
+                    options[i] = false
                 end
-
-                callback(options)
+                if value == true then
+                    if isDefault == nil then
+                        functions.openMenu()
+                    end
+                    options[option] = true
+                end
             end
+            functions.refreshUI()
+            callback(option) -- Callback with the selected option
         end
     end
+end
 
     local function updateDropdown()
         for i, v in pairs(element.OptionHolder.ContentHolder.Content:GetChildren()) do
