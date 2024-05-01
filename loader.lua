@@ -4460,7 +4460,14 @@ function UILibrary.Section:Keybind(sett, callback)
     local keyPressConn = nil
 
     functions.setValue = function(new)
-        element.Text.Text = tostring(new)  -- Convert new to string
+        local keyText = ""
+        if type(new) == "EnumItem" then
+            keyText = tostring(new):gsub("Enum.KeyCode.", "")  -- Extract key text from Enum
+        else
+            keyText = tostring(new)  -- If it's not an Enum, use it directly
+        end
+
+        element.Text.Text = keyText
         updateSize()
 
         currentKb = new
@@ -4556,6 +4563,7 @@ function UILibrary.Section:Keybind(sett, callback)
 
     return meta
 end
+
 
 function toInteger(color)
     return math.floor(color.r * 255) * 256 ^ 2 + math.floor(color.g * 255) * 256 + math.floor(color.b * 255)
