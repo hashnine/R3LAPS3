@@ -4459,6 +4459,8 @@ function UILibrary.Section:Keybind(sett, callback)
     local currentKb = nil
     local keyPressConn = nil
 
+    local currentKBInfo = {} -- Initialize currentKBInfo table
+
     functions.setValue = function(new)
         --/// anims
         element.Text.Text = new.Name
@@ -4517,26 +4519,27 @@ function UILibrary.Section:Keybind(sett, callback)
             conn =
                 game:GetService("UserInputService").InputBegan:Connect(
                 function(input, gp)
-                    --if gp then return end
+                    if gp then 
+                        return 
+                    end
 
                     if input.UserInputType == Enum.UserInputType.Keyboard then
                         currentKb = input.KeyCode
-
-                        rebinding = false
-
-                        functions.setValue(currentKb)
-                        conn:Disconnect()
                     elseif
                         input.UserInputType == Enum.UserInputType.MouseButton2 or
-                            input.UserInputType == Enum.UserInputType.MouseButton1
-                        then
+                        input.UserInputType == Enum.UserInputType.MouseButton1
+                    then
                         currentKb = input.UserInputType
-
+                    else
+                        -- If it's neither keyboard nor mouse button, exit rebinding mode
                         rebinding = false
-
-                        functions.setValue(currentKb)
-                        conn:Disconnect()
+                        return
                     end
+
+                    -- Exit rebinding mode
+                    rebinding = false
+                    functions.setValue(currentKb)
+                    conn:Disconnect()
                 end
             )
 
@@ -4598,6 +4601,7 @@ function toHex(color)
 
     return "#" .. string.reverse(final)
 end
+
 
 function UILibrary.Section:ColorPicker(sett, callback)
     local functions = {}
