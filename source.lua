@@ -125,6 +125,7 @@ local function getObjGen()
                 UIListLayout_9 = Instance.new("UIListLayout"),
                 UIPadding_5 = Instance.new("UIPadding"),
                 Window = Instance.new("Frame"),
+                Watermark = Instance.new("TextLabel"),
                 UIPadding_6 = Instance.new("UIPadding"),
                 MainUI = Instance.new("Frame"),
                 DropShadowHolder_9 = Instance.new("Frame"),
@@ -1201,6 +1202,21 @@ local function getObjGen()
             Gui.Window.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             Gui.Window.BackgroundTransparency = 1.000
             Gui.Window.Size = UDim2.new(1, 0, 1, 0)
+
+            Gui.Watermark.Name = "Watermark"
+            Gui.Watermark.Parent = Gui.Window
+            Gui.Watermark.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Gui.Watermark.BackgroundTransparency = 1.000
+            Gui.Watermark.Size = UDim2.new(0.5, 0, 0.0199999996, 0)
+            Gui.Watermark.Font = Enum.Font.Gotham
+            Gui.Watermark.Text = "hydrahub v2 | nil | nil"
+            Gui.Watermark.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Gui.Watermark.TextSize = 14.000
+            Gui.Watermark.TextStrokeTransparency = 0.800
+            Gui.Watermark.TextXAlignment = Enum.TextXAlignment.Left
+            Gui.Watermark.Position = UDim2.new(0, 0, 0, 0)
+            Gui.Watermark.Transparency = 1
+            
 
             Gui.UIPadding_6.Parent = Gui.Window
             Gui.UIPadding_6.PaddingBottom = UDim.new(0, 8)
@@ -3251,6 +3267,7 @@ function UILibrary.new(gameName, userId, rank)
     local Drag = Draggable.Drag(window.MainUI, Frame)
 
     --// Customize the GUI
+    window.Watermark.Text = ("hydrahub v2 | %s | %s"):format(userId, gameName)
     local userinfo = window.MainUI.Sidebar.ContentHolder.UserInfo.Content
     userinfo.Rank.Text = rank
     userinfo.Title.Text = userId
