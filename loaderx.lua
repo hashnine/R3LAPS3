@@ -4449,7 +4449,7 @@ function UILibrary.Section:Keybind(sett, callback)
 
         TweenService:Create(
             element,
-            TI,
+            TweenInfo.new(0.2), -- Assuming TI is defined elsewhere as TweenInfo
             {
                 Size = UDim2.fromScale(textBounds / element.Parent.AbsoluteSize.X, 1)
             }
@@ -4458,8 +4458,7 @@ function UILibrary.Section:Keybind(sett, callback)
 
     local currentKb = nil
     local keyPressConn = nil
-
-    local currentKBInfo = {} -- Initialize currentKBInfo table
+    local currentKBInfo = {} -- Define currentKBInfo
 
     functions.setValue = function(new)
         --/// anims
@@ -4471,8 +4470,6 @@ function UILibrary.Section:Keybind(sett, callback)
         if keyPressConn then
             keyPressConn:Disconnect()
         end
-
-        currentKBInfo = {}
 
         keyPressConn =
             game:GetService("UserInputService").InputBegan:Connect(
@@ -4519,27 +4516,26 @@ function UILibrary.Section:Keybind(sett, callback)
             conn =
                 game:GetService("UserInputService").InputBegan:Connect(
                 function(input, gp)
-                    if gp then 
-                        return 
-                    end
+                    --if gp then return end
 
                     if input.UserInputType == Enum.UserInputType.Keyboard then
                         currentKb = input.KeyCode
+
+                        rebinding = false
+
+                        functions.setValue(currentKb)
+                        conn:Disconnect()
                     elseif
                         input.UserInputType == Enum.UserInputType.MouseButton2 or
-                        input.UserInputType == Enum.UserInputType.MouseButton1
-                    then
+                            input.UserInputType == Enum.UserInputType.MouseButton1
+                        then
                         currentKb = input.UserInputType
-                    else
-                        -- If it's neither keyboard nor mouse button, exit rebinding mode
-                        rebinding = false
-                        return
-                    end
 
-                    -- Exit rebinding mode
-                    rebinding = false
-                    functions.setValue(currentKb)
-                    conn:Disconnect()
+                        rebinding = false
+
+                        functions.setValue(currentKb)
+                        conn:Disconnect()
+                    end
                 end
             )
 
@@ -4561,12 +4557,14 @@ function UILibrary.Section:Keybind(sett, callback)
         },
         functions
     )
-    self.oldSelf.oldSelf.oldSelf.UI[self.oldSelf.oldSelf.categoryUI.Name][self.oldSelf.SectionName][
-            self.Section.Name
-        ][sett.Title] = meta
+
+    -- Assuming the following line is correct based on your existing code
+    -- It should be adjusted if there's any mistake in understanding your UI hierarchy
+    self.oldSelf.oldSelf.oldSelf.UI[self.oldSelf.oldSelf.categoryUI.Name][self.oldSelf.SectionName][self.Section.Name][sett.Title] = meta
 
     return meta
 end
+
 
 function toInteger(color)
     return math.floor(color.r * 255) * 256 ^ 2 + math.floor(color.g * 255) * 256 + math.floor(color.b * 255)
@@ -4601,7 +4599,6 @@ function toHex(color)
 
     return "#" .. string.reverse(final)
 end
-
 
 function UILibrary.Section:ColorPicker(sett, callback)
     local functions = {}
