@@ -1215,8 +1215,6 @@ local function getObjGen()
             Gui.Watermark.TextStrokeTransparency = 0.800
             Gui.Watermark.TextXAlignment = Enum.TextXAlignment.Left
             Gui.Watermark.Position = UDim2.new(0, 0, 0, 0)
-            Gui.Watermark.Transparency = 1
-            
 
             Gui.UIPadding_6.Parent = Gui.Window
             Gui.UIPadding_6.PaddingBottom = UDim.new(0, 8)
