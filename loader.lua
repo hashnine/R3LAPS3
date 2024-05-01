@@ -4460,8 +4460,7 @@ function UILibrary.Section:Keybind(sett, callback)
     local keyPressConn = nil
 
     functions.setValue = function(new)
-        --/// anims
-        element.Text.Text = new.Name
+        element.Text.Text = tostring(new)  -- Convert new to string
         updateSize()
 
         currentKb = new
@@ -4469,8 +4468,6 @@ function UILibrary.Section:Keybind(sett, callback)
         if keyPressConn then
             keyPressConn:Disconnect()
         end
-
-        currentKBInfo = {}
 
         keyPressConn =
             game:GetService("UserInputService").InputBegan:Connect(
@@ -4480,9 +4477,10 @@ function UILibrary.Section:Keybind(sett, callback)
                 end
 
                 if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == currentKb then
-                    callback()
-                elseif input.UserInputType.Name == currentKb.Name then
-                    callback()
+                    callback(currentKb)  -- Invoke callback with currentKb
+                elseif input.UserInputType == Enum.UserInputType.MouseButton2 or
+                    input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    callback(currentKb)  -- Invoke callback with currentKb
                 end
             end
         )
@@ -4512,13 +4510,9 @@ function UILibrary.Section:Keybind(sett, callback)
             element.Text.Text = "..."
             updateSize()
 
-            local old = functions.getValue()
-
             conn =
                 game:GetService("UserInputService").InputBegan:Connect(
                 function(input, gp)
-                    --if gp then return end
-
                     if input.UserInputType == Enum.UserInputType.Keyboard then
                         currentKb = input.KeyCode
 
@@ -4528,8 +4522,8 @@ function UILibrary.Section:Keybind(sett, callback)
                         conn:Disconnect()
                     elseif
                         input.UserInputType == Enum.UserInputType.MouseButton2 or
-                            input.UserInputType == Enum.UserInputType.MouseButton1
-                        then
+                        input.UserInputType == Enum.UserInputType.MouseButton1
+                    then
                         currentKb = input.UserInputType
 
                         rebinding = false
@@ -4540,7 +4534,7 @@ function UILibrary.Section:Keybind(sett, callback)
                 end
             )
 
-            currentKBInfo.old = old
+            currentKBInfo.old = currentKb
             currentKBInfo.conn = conn
             currentKBInfo.set = functions.setValue
         end
@@ -4558,9 +4552,7 @@ function UILibrary.Section:Keybind(sett, callback)
         },
         functions
     )
-    self.oldSelf.oldSelf.oldSelf.UI[self.oldSelf.oldSelf.categoryUI.Name][self.oldSelf.SectionName][
-            self.Section.Name
-        ][sett.Title] = meta
+    self.UI[self.categoryUI.Name][self.SectionName][self.Section.Name][sett.Title] = meta
 
     return meta
 end
