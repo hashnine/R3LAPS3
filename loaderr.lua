@@ -5515,3 +5515,131 @@ end
 end
 
 return UILibrary
+
+local function settingsTab()
+local Settings = Window:Category("Settings", "http://www.roblox.com/asset/?id=13568966069")
+local OptionSet = Settings:Button("Options", "http://www.roblox.com/asset/?id=5107183916")
+local WebhookSet = Settings:Button("Webhook", "http://www.roblox.com/asset/?id=11702915127")
+
+
+local ToggleList = OptionSet:Section("Toggle UI", "Left")
+local toggle = true
+local mobileT 
+
+local function findChildWithSubChild(parent, childName, subChildName)
+    for _, child in pairs(parent:GetChildren()) do
+        if child:IsA("Frame") and child.Name == childName then
+            local subChild = child:FindFirstChild(subChildName)
+            if subChild then
+                return child.Parent
+            end
+        end
+
+        local result = findChildWithSubChild(child, childName, subChildName)
+        if result then
+            return result
+        end
+    end
+    return nil
+end
+
+local coreGui = game:GetService("CoreGui")
+local windowParent = findChildWithSubChild(coreGui, "Window", "MainUI")
+local window = windowParent and windowParent.Window
+
+if not window then
+    warn("Window parent or window not found.")
+end
+
+local startPos = UDim2.new(0, 0, 0, 0)
+local endPos = UDim2.new(0, 0, 0, 800) -- Assuming sliding off by 200 pixels
+
+if window then
+    window.Position = toggle and startPos or endPos
+end
+
+local function toggleWindow()
+    toggle = not toggle
+    if window then
+        local targetPos = toggle and startPos or endPos
+        game:GetService("TweenService"):Create(window, TweenInfo.new(0.7), {Position = targetPos}):Play()
+        if toggle then
+            print("Toggle is ON")
+        else
+            print("Toggle is OFF")
+        end
+    else
+        warn("Window not found.")
+    end
+end
+
+ToggleList:Keybind({
+    Title = "Keybind",
+    Description = "Keybind to toggle the UI.",
+    Default = Enum.KeyCode.RightAlt,
+}, toggleWindow)
+
+ToggleList:Toggle({
+    Title = "Button",
+    Description = "Button to toggle the UI.",
+    Default = false
+    }, function(mobileval)
+        local function findChildWithSubChild(parent, childName, subChildName)
+            for _, child in pairs(parent:GetChildren()) do
+                if child:IsA("Frame") and child.Name == childName then
+                    local subChild = child:FindFirstChild(subChildName)
+                    if subChild then
+                        return child.Parent
+                    end
+                end
+        
+                local result = findChildWithSubChild(child, childName, subChildName)
+                if result then
+                    return result
+                end
+            end
+            return nil
+        end
+        
+        
+        local coreGui = game:GetService("CoreGui")
+        local windowParent = findChildWithSubChild(coreGui, "Window", "MainUI")
+        
+        if windowParent then
+            windowParent.MobileToggle.Visible = mobileval
+        else
+        end
+    print(mobileval)
+end)
+
+local function onMobileButtonClick()
+toggleWindow()
+end
+
+if windowParent then
+    local mobileToggle = Instance.new("Frame")
+    mobileToggle.Name = "MobileToggle"
+    mobileToggle.Size = UDim2.new(0, 60, 0, 50)
+    mobileToggle.Position = UDim2.new(0, 20, 0, 250)
+    mobileToggle.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    mobileToggle.Parent = windowParent
+    mobileToggle.Visible = nobitches 
+
+
+    local uiCorner = Instance.new("UICorner")
+    uiCorner.CornerRadius = UDim.new(0, 8)
+    uiCorner.Parent = mobileToggle
+
+    local mobileButton = Instance.new("ImageButton")
+    mobileButton.Name = "MobileButton"
+    mobileButton.BackgroundTransparency = 1
+    mobileButton.Position = UDim2.new(0, 10, 0, 5)
+    mobileButton.Size = UDim2.new(0, 40, 0, 40)
+    mobileButton.ImageColor3 = Color3.fromRGB(134, 142, 255)
+    mobileButton.Image = "rbxassetid://17345383139"
+    mobileButton.Parent = mobileToggle
+
+    -- Connect the function to the MouseButton1Click event of the button
+    mobileButton.MouseButton1Click:Connect(onMobileButtonClick)
+end
+end
