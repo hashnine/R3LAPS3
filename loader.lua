@@ -5514,8 +5514,6 @@ end
     return meta
 end
 
-return UILibrary
-
 local function settingsTab()
 local Settings = Window:Category("Settings", "http://www.roblox.com/asset/?id=13568966069")
 local OptionSet = Settings:Button("Options", "http://www.roblox.com/asset/?id=5107183916")
@@ -5643,3 +5641,5 @@ if windowParent then
     mobileButton.MouseButton1Click:Connect(onMobileButtonClick)
 end
 end
+
+return UILibrary
