@@ -5013,7 +5013,7 @@ function UILibrary.Section:ColorPicker(sett, callback)
     return meta
 end
 
-function UILibrary.Section:Slider(sett, callback)
+function UILibrary.Section:Slider(sett, callback, rate)
     local functions = {}
     functions.__index = functions
 
@@ -5039,6 +5039,10 @@ function UILibrary.Section:Slider(sett, callback)
     end
 
     functions.setValue = function(v, scale)
+        if rate then
+            v = v + (rate * (sett.Max - sett.Min))
+        end
+
         sliderValue = math.floor(v)
         scaleValue = scale
 
@@ -5102,13 +5106,9 @@ function UILibrary.Section:Slider(sett, callback)
             if holding then
                 local mouseX = LocalPlayer:GetMouse().X
                 local sliderPos = element.Drag.AbsolutePosition.X
-
                 local leftBoundary = element.Drag.AbsolutePosition.X - (element.Drag.AbsoluteSize.X)
-
                 local rightBoundary = element.Drag.AbsolutePosition.X + (element.Drag.AbsoluteSize.X)
-
                 local maxPos = math.clamp((mouseX - sliderPos) / (rightBoundary - sliderPos), 0, 1)
-
                 local val = ((sett.Max - sett.Min) * maxPos) + sett.Min
 
                 functions.setValue(val, maxPos)
@@ -5157,7 +5157,7 @@ function UILibrary.Section:Slider(sett, callback)
         functions
     )
 
-    self.oldSelf.oldSelf.oldSelf.UI[self.oldSelf.oldSelf.categoryUI.Name][self.oldSelf.SectionName][
+    self.oldSelf.oldSelf.oldSelf.UI[self.oldSelf.oldSelf.categoryUI.Name][self.oldSelf.oldSelf.SectionName][
             self.Section.Name
         ][sett.Title] = meta
 
