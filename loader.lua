@@ -5017,9 +5017,6 @@ function UILibrary.Section:Slider(sett, callback)
     local functions = {}
     functions.__index = functions
 
-    local functions = {}
-    functions.__index = functions
-
     local cheatBase = generateCheatBase("Slider", sett)
     cheatBase.Parent = self.Section.Border.Content
     cheatBase.LayoutOrder = getLayoutOrder(self.Section.Border.Content)
@@ -5032,10 +5029,6 @@ function UILibrary.Section:Slider(sett, callback)
 
     if sett.Max == nil then
         sett.Max = 10
-    end
-
-    if sett.Rate == nil then
-        sett.Rate = 1
     end
 
     local sliderValue = sett.Min
@@ -5116,7 +5109,7 @@ function UILibrary.Section:Slider(sett, callback)
 
                 local maxPos = math.clamp((mouseX - sliderPos) / (rightBoundary - sliderPos), 0, 1)
 
-                local val = sliderValue + (sett.Max - sett.Min) * maxPos * sett.Rate
+                local val = ((sett.Max - sett.Min) * maxPos) + sett.Min
 
                 functions.setValue(val, maxPos)
             end
@@ -5170,7 +5163,6 @@ function UILibrary.Section:Slider(sett, callback)
 
     return meta
 end
-
 function UILibrary.Section:Dropdown(sett, callback)
     local functions = {}
     functions.__index = functions
