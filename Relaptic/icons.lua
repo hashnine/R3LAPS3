@@ -19,4 +19,4 @@ local categoryicons = {
     farm = "http://www.roblox.com/asset/?id=17346066763",
 }
 
-local ci = categoryicons
+return categoryicons
