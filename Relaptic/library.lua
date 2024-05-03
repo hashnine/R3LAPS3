@@ -4,7 +4,7 @@
  | |_) |  / _ \ | |  / _` | | '_ \  | __| | |  / __|     | |     | | | '_ \  | '__|  / _` | | '__| | | | |
  |  _ <  |  __/ | | | (_| | | |_) | | |_  | | | (__      | |___  | | | |_) | | |    | (_| | | |    | |_| |
  |_| \_\  \___| |_|  \__,_| | .__/   \__| |_|  \___|     |_____| |_| |_.__/  |_|     \__,_| |_|     \__, |
-                            |_|                                                                   |___/            
+                            |_|                                                                     |___/            
  * This is a forked / updated version of StepBroFurious's ui Hydra.
  * It was a great ui lib but it had broken features so I fixed it.
 
