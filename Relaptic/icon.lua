@@ -21,7 +21,7 @@ local categoryicons = {
     slider2 = "http://www.roblox.com/asset/?id=17385542029",
     ping = "http://www.roblox.com/asset/?id=17385545204",
     controller = "http://www.roblox.com/asset/?id=17385579327",
-    hoop = "http://www.roblox.com/asset/?id=17385664067",
+    basketball = "http://www.roblox.com/asset/?id=17385720259",
 }
 
 return categoryicons
