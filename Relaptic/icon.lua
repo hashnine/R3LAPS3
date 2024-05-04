@@ -20,6 +20,7 @@ local categoryicons = {
     slider1 = "http://www.roblox.com/asset/?id=17385521578",
     slider2 = "http://www.roblox.com/asset/?id=17385542029",
     ping = "http://www.roblox.com/asset/?id=17385545204",
+    controller = "http://www.roblox.com/asset/?id=17385579327",
 }
 
 return categoryicons
