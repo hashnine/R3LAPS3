@@ -17,6 +17,9 @@ local categoryicons = {
     key = "http://www.roblox.com/asset/?id=17346052540",
     shield = "http://www.roblox.com/asset/?id=17346054236",
     farm = "http://www.roblox.com/asset/?id=17346066763",
+    slider1 = "http://www.roblox.com/asset/?id=17385521578",
+    slider2 = "http://www.roblox.com/asset/?id=17385542029",
+    ping = "http://www.roblox.com/asset/?id=17385545204",
 }
 
 return categoryicons
